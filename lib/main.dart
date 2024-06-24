@@ -81,16 +81,16 @@ class _FibonacciScrollViewState extends State<FibonacciScrollView> {
 
     showModalBottomSheet(
       context: context,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20), // Adjust the radius as needed
+          top: Radius.circular(20),
         ),
       ),
       builder: (context) {
         return Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             borderRadius: BorderRadius.vertical(
-              top: Radius.circular(20), // Same radius as shape
+              top: Radius.circular(20),
             ),
           ),
           child: ListView.builder(
