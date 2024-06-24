@@ -81,41 +81,49 @@ class _FibonacciScrollViewState extends State<FibonacciScrollView> {
 
     showModalBottomSheet(
       context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20), // Adjust the radius as needed
+        ),
+      ),
       builder: (context) {
-        return ListView.builder(
-          itemCount: filteredItems.length,
-          itemBuilder: (context, index) {
-            bool isLastHiddenItem = filteredItems[index] == _lastHiddenItem;
-            return ListTile(
-              title: Text(
-                'Number: ${filteredItems[index]['number']}',
-              ),
-              tileColor: isLastHiddenItem ? Colors.green : Colors.transparent,
-              onTap: () {
-                setState(() {
-                  int originalIndex = filteredItems[index]['index'];
-                  mainList.insert(originalIndex, filteredItems[index]);
-                  hiddenItems.remove(filteredItems[index]);
-                  _highlightedIndex = originalIndex;
-                });
-                Navigator.pop(context);
-                _scrollToHighlightedItem();
-              },
-            );
-          },
+        return Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(20), // Same radius as shape
+            ),
+          ),
+          child: ListView.builder(
+            itemCount: filteredItems.length,
+            itemBuilder: (context, index) {
+              bool isLastHiddenItem = filteredItems[index] == _lastHiddenItem;
+              return ListTile(
+                title: Text(
+                  'Number: ${filteredItems[index]['number']}',
+                ),
+                subtitle: Text('index: ${filteredItems[index]['index']}'),
+                trailing: Icon(
+                  icon == filteredItems[index]['icon']
+                      ? filteredItems[index]['icon']
+                      : Icons.square,
+                ),
+                tileColor: isLastHiddenItem ? Colors.green : Colors.transparent,
+                onTap: () {
+                  setState(() {
+                    int originalIndex = filteredItems[index]['index'];
+                    mainList.insert(originalIndex, filteredItems[index]);
+                    hiddenItems.remove(filteredItems[index]);
+                    _highlightedIndex = originalIndex;
+                  });
+                  Navigator.pop(context);
+                  _scrollToHighlightedItem();
+                },
+              );
+            },
+          ),
         );
       },
     );
-  }
-
-  void _scrollToHighlightedItem() {
-    if (_highlightedIndex != null) {
-      _scrollController.animateTo(
-        _highlightedIndex! * 72.0,
-        duration: const Duration(seconds: 1),
-        curve: Curves.easeInOut,
-      );
-    }
   }
 
   void _handleIconTap(int index, IconData icon) {
@@ -129,6 +137,18 @@ class _FibonacciScrollViewState extends State<FibonacciScrollView> {
       showBottomSheet(context, icon: icon);
     } else if (icon == Icons.square) {
       showBottomSheet(context);
+    }
+
+    _scrollToHighlightedItem();
+  }
+
+  void _scrollToHighlightedItem() {
+    if (_highlightedIndex != null) {
+      _scrollController.animateTo(
+        _highlightedIndex! * 72.0,
+        duration: const Duration(seconds: 1),
+        curve: Curves.easeInOut,
+      );
     }
   }
 
